@@ -1,5 +1,6 @@
 package com.codepath.skhgridimagesearch.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ImageResult {
+public class ImageResult implements Serializable {
+	private static final long serialVersionUID = -3845529463181327025L;
+
 	public String fullUrl;
 	public String thumbUrl;
 	public String title;
@@ -18,7 +21,7 @@ public class ImageResult {
 		try {
 			this.fullUrl = json.getString("url");
 			this.thumbUrl = json.getString("tbUrl");
-			this.fullUrl = json.getString("title");
+			this.title = json.getString("title");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

@@ -9,11 +9,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.AvoidXfermode;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -45,6 +49,22 @@ public class SearchActivity extends Activity {
     private void setupViews() {
     	etQuery = (EditText) findViewById(R.id.etQuery);
     	gvResults = (GridView) findViewById(R.id.gvResults);
+    	gvResults.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// Launch the imagedisplayactivity
+				Intent i = new Intent(SearchActivity.this, ImageDisplayActivity.class);
+				
+				// get the image result to display
+				ImageResult result = imageResults.get(position);
+				
+				// pass image result into intent
+				i.putExtra("result", result);
+				
+				// launch the new activity
+				startActivity(i);
+			}
+		});
     }
 
     @Override
