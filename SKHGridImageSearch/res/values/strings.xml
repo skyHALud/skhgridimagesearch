@@ -10,7 +10,8 @@
     <string name="title_activity_image_display">Full Image</string>
     <string name="title_activity_search_filter">Advanced Search Options</string>
     <string name="image_size">Image size</string>
-
+	<string name="action_save_filter">Save</string>
+    
     <string-array name="image_sizes_array">
         <item>icon</item>
 		<item>medium</item>
@@ -32,4 +33,17 @@
 		<item>white</item>
 		<item>yellow</item>
     </string-array>
+    
+    <string-array name="image_types">
+        <item>photo</item>
+		<item>face</item>
+		<item>clipart</item>
+		<item>lineart</item>
+    </string-array>
+    
+	<string name="image_color">Color</string>
+    
+	<string name="image_type">Type</string>
+    
+	<string name="site_filter">Site</string>
 </resources>
