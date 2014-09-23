@@ -13,6 +13,7 @@
 	<string name="action_save_filter">Save</string>
     
     <string-array name="image_sizes_array">
+        <item>any</item>
         <item>icon</item>
 		<item>medium</item>
 		<item>xxlarge</item>
@@ -20,6 +21,7 @@
     </string-array>
     
     <string-array name="image_colors_array">
+        <item>any</item>
         <item>black</item>
 		<item>blue</item>
 		<item>brown</item>
@@ -35,6 +37,7 @@
     </string-array>
     
     <string-array name="image_types">
+        <item>any</item>
         <item>photo</item>
 		<item>face</item>
 		<item>clipart</item>

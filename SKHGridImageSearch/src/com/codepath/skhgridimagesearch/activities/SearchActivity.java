@@ -32,7 +32,9 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class SearchActivity extends Activity {
 
+	private static final String RESPONSE_DATA_KEY = "responseData";
 	public static final int REQUEST_CODE_SEARCHFILTER = 666;
+	public static final String ANY_CHOICE = "any"; // This needs to match the arrays from string.xml
 	
 	private EditText etQuery;
 	private GridView gvResults;
@@ -103,8 +105,6 @@ public class SearchActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_SEARCHFILTER) {
     		this.settings = (SearchSettings) data.getSerializableExtra(SEARCH_SETTINGS_EXTRA);
-    		
-    		
     	}
     	
     	super.onActivityResult(requestCode, resultCode, data);
@@ -127,10 +127,14 @@ public class SearchActivity extends Activity {
         		JSONArray imageResultsJson = null;
         		
         		try {
-					imageResultsJson = response.getJSONObject("responseData").getJSONArray("results");
-					imageResults.clear();
-					
-					aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
+        			imageResults.clear();
+        			
+					if(response.has(RESPONSE_DATA_KEY) && !response.get(RESPONSE_DATA_KEY).equals(JSONObject.NULL)) {
+						imageResultsJson = response.getJSONObject(RESPONSE_DATA_KEY).getJSONArray("results");
+						aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
+					} else {
+						Toast.makeText(SearchActivity.this, "No results found!", Toast.LENGTH_LONG).show();
+					}
 				} catch (JSONException e) {
 					Log.e(getClass().getName(), e.getMessage(), e);
 				}
@@ -142,9 +146,25 @@ public class SearchActivity extends Activity {
 
 	private String buildQueryFromSettings() {
 		if(settings != null) {
-			return String.format("&imgsz=%s&imgcolor=%s&imgtype=%s", settings.imageSize, settings.imageColor, settings.imageType);
+			String query = StringUtils.EMPTY;
+			
+			query += appendIfSet("imgsz", settings.imageSize);
+			query += appendIfSet("imgcolor", settings.imageColor);
+			query += appendIfSet("imgtype", settings.imageType);
+			
+			if(!StringUtils.isEmpty(settings.site)) {
+				query += "as_sitesearch=" + settings.site;
+			}
+			
+			return query;
 		} else {
 			return StringUtils.EMPTY;
 		}
 	}
+	
+	private String appendIfSet(String paramName, String paramValue) {
+		return isAnyChoice(paramValue) ? StringUtils.EMPTY : "&" + paramName + "=" + paramValue;
+	}
+
+	private static final boolean isAnyChoice(String choice) {return choice.equals(ANY_CHOICE);}
 }
