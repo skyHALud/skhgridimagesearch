@@ -53,6 +53,15 @@ public class SearchActivity extends Activity {
         imageResults = new ArrayList<ImageResult>();
         aImageResults = new ImageResultsAdapter(this, imageResults);
         gvResults.setAdapter(aImageResults);
+        
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+    	    @Override
+    	    public void onLoadMore(int page, int totalItemsCount) {
+                    // Triggered only when new data needs to be appended to the list
+                    // Add whatever code is needed to append new items to your AdapterView
+    	        loadMoreImages(page); 
+    	    }
+            });
     }
 
     private void setupViews() {
@@ -112,28 +121,38 @@ public class SearchActivity extends Activity {
     
     // Bound to android:onclick
     public void onImageSearch(View v) {
-    	String query = etQuery.getText().toString();
-    	Toast.makeText(this, "Search for: " + query, Toast.LENGTH_SHORT).show();
+    	Toast.makeText(this, "Search for: " + etQuery.getText().toString(), Toast.LENGTH_SHORT).show();
     	
-    	// https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&q=
-    	// title, tbUrl
+    	loadMoreImages(); 	
+    }
 
+    public void loadMoreImages() {
+    	loadMoreImages(0);
+    }
+    
+	public void loadMoreImages(final int page) {
+		String query = etQuery.getText().toString();
         AsyncHttpClient client = new AsyncHttpClient();
-        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8" + buildQueryFromSettings() +"&q=" + query;
+        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&start=" + (page * 8) + buildQueryFromSettings() +"&q=" + query;
         client.get(searchUrl, new JsonHttpResponseHandler() {
         	@Override
         	public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-        		Log.i("debug", response.toString());
         		JSONArray imageResultsJson = null;
         		
+        		Log.i("INFO", "Loading page " + page);
+        		
         		try {
-        			imageResults.clear();
+        			if(page == 0) {
+        				imageResults.clear();
+        			}
         			
 					if(response.has(RESPONSE_DATA_KEY) && !response.get(RESPONSE_DATA_KEY).equals(JSONObject.NULL)) {
 						imageResultsJson = response.getJSONObject(RESPONSE_DATA_KEY).getJSONArray("results");
 						aImageResults.addAll(ImageResult.fromJSONArray(imageResultsJson));
 					} else {
-						Toast.makeText(SearchActivity.this, "No results found!", Toast.LENGTH_LONG).show();
+						if(page == 0) {
+							Toast.makeText(SearchActivity.this, "No results found!", Toast.LENGTH_LONG).show();
+						}
 					}
 				} catch (JSONException e) {
 					Log.e(getClass().getName(), e.getMessage(), e);
@@ -141,8 +160,8 @@ public class SearchActivity extends Activity {
         		
         		Log.i("INFO", imageResults.toString());
         	}
-        }); 	
-    }
+        });
+	}
 
 	private String buildQueryFromSettings() {
 		if(settings != null) {
