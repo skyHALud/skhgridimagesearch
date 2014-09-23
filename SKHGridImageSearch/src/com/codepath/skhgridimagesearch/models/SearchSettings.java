@@ -9,4 +9,12 @@ public class SearchSettings implements Serializable {
 	public String imageColor;
 	public String imageType;
 	public String site;
+	@Override
+	public String toString() {
+		return "SearchSettings [imageSize=" + imageSize + ", imageColor="
+				+ imageColor + ", imageType=" + imageType + ", site=" + site
+				+ "]";
+	}
+	
+	
 }

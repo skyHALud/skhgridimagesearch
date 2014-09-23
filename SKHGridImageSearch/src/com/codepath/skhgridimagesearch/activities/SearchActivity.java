@@ -3,6 +3,7 @@ package com.codepath.skhgridimagesearch.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,7 +11,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.AvoidXfermode;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,16 +25,23 @@ import android.widget.Toast;
 import com.codepath.skhgridimagesearch.R;
 import com.codepath.skhgridimagesearch.adapters.ImageResultsAdapter;
 import com.codepath.skhgridimagesearch.models.ImageResult;
+import com.codepath.skhgridimagesearch.models.SearchSettings;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 
 public class SearchActivity extends Activity {
 
+	public static final int REQUEST_CODE_SEARCHFILTER = 666;
+	
 	private EditText etQuery;
 	private GridView gvResults;
 	private List<ImageResult> imageResults;
 	private ImageResultsAdapter aImageResults;
+
+	private SearchSettings settings;
+
+	static final String SEARCH_SETTINGS_EXTRA = "search_settings";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +90,24 @@ public class SearchActivity extends Activity {
         if (id == R.id.action_settings) {
         	Intent i = new Intent(SearchActivity.this, SearchFilterActivity.class);
         	
-        	startActivity(i);
+        	if(settings != null) i.putExtra(SEARCH_SETTINGS_EXTRA, settings);
+        	startActivityForResult(i, REQUEST_CODE_SEARCHFILTER);
         	
             return true;
         }
         
         return false;
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_SEARCHFILTER) {
+    		this.settings = (SearchSettings) data.getSerializableExtra(SEARCH_SETTINGS_EXTRA);
+    		
+    		
+    	}
+    	
+    	super.onActivityResult(requestCode, resultCode, data);
     }
     
     // Bound to android:onclick
@@ -100,7 +119,7 @@ public class SearchActivity extends Activity {
     	// title, tbUrl
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&q=" + query;
+        String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8" + buildQueryFromSettings() +"&q=" + query;
         client.get(searchUrl, new JsonHttpResponseHandler() {
         	@Override
         	public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -120,4 +139,12 @@ public class SearchActivity extends Activity {
         	}
         }); 	
     }
+
+	private String buildQueryFromSettings() {
+		if(settings != null) {
+			return String.format("&imgsz=%s&imgcolor=%s&imgtype=%s", settings.imageSize, settings.imageColor, settings.imageType);
+		} else {
+			return StringUtils.EMPTY;
+		}
+	}
 }

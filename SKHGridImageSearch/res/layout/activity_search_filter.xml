@@ -55,7 +55,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
-        android:id="@+id/spnImageTime"
+        android:id="@+id/spnImageType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/spnImageColor"
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/spnImageTime"
+        android:layout_below="@+id/spnImageType"
         android:text="@string/site_filter"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -75,8 +75,9 @@
         android:id="@+id/etSite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spnImageTime"
+        android:layout_alignLeft="@+id/spnImageType"
         android:layout_alignTop="@+id/textView4"
+        android:hint="picasaweb.google.com"
         android:ems="10" >
 
         <requestFocus />
