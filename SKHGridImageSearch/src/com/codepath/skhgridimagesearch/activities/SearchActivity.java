@@ -20,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
 import com.codepath.skhgridimagesearch.R;
@@ -35,8 +37,8 @@ public class SearchActivity extends Activity {
 	private static final String RESPONSE_DATA_KEY = "responseData";
 	public static final int REQUEST_CODE_SEARCHFILTER = 666;
 	public static final String ANY_CHOICE = "any"; // This needs to match the arrays from string.xml
+	protected static String query;
 	
-	private EditText etQuery;
 	private GridView gvResults;
 	private List<ImageResult> imageResults;
 	private ImageResultsAdapter aImageResults;
@@ -62,10 +64,11 @@ public class SearchActivity extends Activity {
     	        loadMoreImages(page); 
     	    }
             });
+        
+        
     }
 
     private void setupViews() {
-    	etQuery = (EditText) findViewById(R.id.etQuery);
     	gvResults = (GridView) findViewById(R.id.gvResults);
     	gvResults.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -89,6 +92,22 @@ public class SearchActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.search, menu);
+        
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+           @Override
+           public boolean onQueryTextSubmit(String query) {
+        	   SearchActivity.query = query;
+        	   doImageSearch();
+               return true;
+           }
+
+           @Override
+           public boolean onQueryTextChange(String newText) {
+               return false;
+           }
+       });
         return true;
     }
 
@@ -120,8 +139,8 @@ public class SearchActivity extends Activity {
     }
     
     // Bound to android:onclick
-    public void onImageSearch(View v) {
-    	Toast.makeText(this, "Search for: " + etQuery.getText().toString(), Toast.LENGTH_SHORT).show();
+    public void doImageSearch() {
+    	Toast.makeText(this, "Search for: " + query, Toast.LENGTH_SHORT).show();
     	
     	loadMoreImages(); 	
     }
@@ -131,7 +150,6 @@ public class SearchActivity extends Activity {
     }
     
 	public void loadMoreImages(final int page) {
-		String query = etQuery.getText().toString();
         AsyncHttpClient client = new AsyncHttpClient();
         String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&start=" + (page * 8) + buildQueryFromSettings() +"&q=" + query;
         client.get(searchUrl, new JsonHttpResponseHandler() {
@@ -143,7 +161,7 @@ public class SearchActivity extends Activity {
         		
         		try {
         			if(page == 0) {
-        				imageResults.clear();
+        				aImageResults.clear();
         			}
         			
 					if(response.has(RESPONSE_DATA_KEY) && !response.get(RESPONSE_DATA_KEY).equals(JSONObject.NULL)) {
