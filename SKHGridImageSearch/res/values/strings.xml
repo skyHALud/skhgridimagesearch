@@ -4,6 +4,7 @@
     <string name="app_name">SKHGridImageSearch</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Search Filter</string>
+    <string name="action_share_image">Share</string>
     <string name="search_promt">Enter search query</string>
     <string name="search_label">Search</string>
     <string name="image_title_label">Image title</string>
