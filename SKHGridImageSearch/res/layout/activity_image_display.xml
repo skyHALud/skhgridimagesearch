@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.skhgridimagesearch.activities.ImageDisplayActivity" >
 
-    <ImageView
+    <com.codepath.skhgridimagesearch.thirdparty.TouchImageView
         android:id="@+id/ivImageResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
