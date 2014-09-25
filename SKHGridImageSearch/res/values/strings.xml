@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SKHGridImageSearch</string>
+    <string name="app_name">SKH Grid Image Search</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Search Filter</string>
     <string name="action_share_image">Share</string>
