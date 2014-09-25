@@ -37,7 +37,7 @@
 		<item>yellow</item>
     </string-array>
     
-    <string-array name="image_types">
+    <string-array name="image_types_array">
         <item>any</item>
         <item>photo</item>
 		<item>face</item>

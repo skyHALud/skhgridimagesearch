@@ -22,15 +22,16 @@
         android:id="@+id/spnImageSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/textView1"
         android:layout_marginLeft="37dp"
-        android:layout_toRightOf="@+id/textView1" 
-        android:entries="@array/image_sizes_array" />
+        android:layout_toRightOf="@+id/textView1"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/spnImageSize"
         android:text="@string/image_color"
@@ -42,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/spnImageSize"
         android:layout_alignTop="@+id/textView2" 
-        android:entries="@array/image_colors_array"
+        android:layout_alignParentRight="true"
         />
 
     <TextView
@@ -60,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/spnImageColor"
         android:layout_alignTop="@+id/textView3" 
-        android:entries="@array/image_types"/>
+        android:layout_alignParentRight="true"/>
 
     <TextView
         android:id="@+id/textView4"
@@ -68,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/spnImageType"
+        android:layout_alignParentRight="true"
         android:text="@string/site_filter"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -76,9 +78,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/spnImageType"
+        android:layout_alignRight="@+id/spnImageType"
         android:layout_alignTop="@+id/textView4"
-        android:hint="picasaweb.google.com"
-        android:ems="10" >
+        android:ems="10"
+        android:hint="picasaweb.google.com" >
 
         <requestFocus />
     </EditText>

@@ -1,5 +1,7 @@
 package com.codepath.skhgridimagesearch.activities;
 
+import java.util.Arrays;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,8 +34,16 @@ public class SearchFilterActivity extends Activity {
 		spnImageType = (Spinner) findViewById(R.id.spnImageType);
 		etSite = (EditText) findViewById(R.id.etSite);
 		
+		spnImageSize.setAdapter(createRhsSpinnerAdapter(R.array.image_sizes_array));
+		spnImageColor.setAdapter(createRhsSpinnerAdapter(R.array.image_colors_array));
+		spnImageType.setAdapter(createRhsSpinnerAdapter(R.array.image_types_array));
+		
 		settings = (SearchSettings) getIntent().getSerializableExtra(SearchActivity.SEARCH_SETTINGS_EXTRA);
 		displaySearchSettings();
+	}
+
+	public ArrayAdapter<String> createRhsSpinnerAdapter(int arrayId) {
+		return new ArrayAdapter<String>(this, R.layout.rhs_spinner_item, Arrays.asList( getResources().getStringArray(arrayId)));
 	}
 
 	@Override
