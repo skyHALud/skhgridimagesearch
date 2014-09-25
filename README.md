@@ -1,4 +1,5 @@
-
+# Effort
+Est. 7 hours
 
 # User Stories
 
@@ -15,10 +16,9 @@ Mandatory:
 
 Advanced:
 
-1. TODO Advanced: Robust error handling, check if internet is available, handle error cases, network failures
 1. Use the ActionBar SearchView or custom layout as the query box instead of an EditText
 1. User can share an image to their friends or email it to themselves
-1. TODO Advanced: Replace Filter Settings Activity with a lightweight modal overlay
-1. TODO Advanced: Improve the user interface and experiment with image assets and/or styling and coloring
-1. TODO Bonus: Use the StaggeredGridView to display improve the grid of image results
 1. Bonus: User can zoom or pan images displayed in full-screen detail view
+
+# Walkthrough
+![Walkthrough](skhgridimagesearch-1.0-recording.gif)
